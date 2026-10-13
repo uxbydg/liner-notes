@@ -1,0 +1,7 @@
+# Your documents and your search stay on your computer.
+sources/*
+!sources/README.md
+digest/*
+!digest/README.md
+*.pdf
+.DS_Store
