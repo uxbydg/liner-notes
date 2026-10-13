@@ -38,7 +38,7 @@ Play them in order. Each one is a prompt you paste into Claude Code.
 |---|---|---|
 | [01. Your Evidence File](prompts/01-evidence-file.md) | `CLAIMS.md`: everything you've done, each line with its proof | Your documents in `sources/` |
 | [02. Your Answers File](prompts/02-answers-file.md) | `answers.md`: the questions every form asks, answered once | Your salary range and where you're willing to work |
-| [03. Your Company List](prompts/03-company-list.md) | A daily digest of new openings at companies you pick | Ten companies you'd be glad to work for |
+| [03. Your Company List](prompts/03-company-list.md) | A daily digest of new openings at the companies and boards you pick. Add or drop one any time in `digest/watchlist.md` | Ten companies you'd be glad to work for |
 | [04. Apply to One Role](prompts/04-apply.md) | A fit read, a tailored resume, and the form filled in | One posting link |
 | [05. Track It](prompts/05-track-it.md) | `applications.md`, plus a watch on every posting | Nothing. Track 04 adds the row |
 | [06. The Dream Role](prompts/06-dream-role.md) (bonus) | One small thing made for one team, and a note asking for input | A role you'd really want, and an evening |
@@ -62,7 +62,7 @@ answers.md           Your answers file (Track 02 fills it)
 applications.md      Every application and where it stands (Tracks 04, 05)
 resume/              Your base resume and the phrases you've cut
 prompts/             The seven tracks
-digest/              Where the daily digest lands (Track 03)
+digest/              Your watchlist and the daily digest (Track 03)
 career-record/       Your Career Record page
 .claude/skills/      /apply, /prep, and /career-record
 ```
