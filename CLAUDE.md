@@ -16,6 +16,7 @@
 - `applications.md`: one row per application, with its status.
 - `resume/base-resume.md`: my base resume. `resume/cut-phrases.txt`: phrases I've cut, one per line.
 - One folder per application, named `<company>-<role>` in kebab-case.
+- `career-record/`: my Career Record page. Rebuild `record.js` with /career-record whenever CLAIMS.md, answers.md, or applications.md changes.
 
 # My rules
 

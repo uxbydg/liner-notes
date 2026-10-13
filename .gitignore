@@ -5,3 +5,4 @@ digest/*
 !digest/README.md
 *.pdf
 .DS_Store
+career-record/record.js

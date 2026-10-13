@@ -46,6 +46,12 @@ Play them in order. Each one is a prompt you paste into Claude Code.
 
 Tracks 04 and 07 also come as skills: type `/apply <link>` or `/prep` in Claude Code, from inside this folder.
 
+## Your Career Record
+
+You don't have to read all these files. After Track 01, type `/career-record`. Claude builds a private page on your computer that shows what it read, where your documents disagree, and the questions it still has. Answer them right on the page, skip any of them, then copy your answers back into Claude Code. Claude saves them to your files and rebuilds the page. It also shows where every application stands.
+
+Salary, your address, and demographic answers never show up on it.
+
 ## What's in the folder
 
 ```
@@ -57,7 +63,8 @@ applications.md      Every application and where it stands (Tracks 04, 05)
 resume/              Your base resume and the phrases you've cut
 prompts/             The seven tracks
 digest/              Where the daily digest lands (Track 03)
-.claude/skills/      /apply and /prep
+career-record/       Your Career Record page
+.claude/skills/      /apply, /prep, and /career-record
 ```
 
 Each application gets its own folder, like `acme-senior-designer/`, holding the posting, the fit read, the tailored resume, and the prep sheet.

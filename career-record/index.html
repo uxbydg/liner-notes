@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex"/>
+<title>Career Record</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+  /* Your Career Record. Claude writes record.js from your files; this page only reads it.
+     Your answers stay in this browser until you copy them back to Claude. */
+  :root{
+    --ink:#1B1410; --cream:#FFF3DF; --paper:#FFF9EE; --card:#FFFDF8; --white:#FFFFFF;
+    --sun:#FFC53D; --teal:#16706A; --teal-deep:#0F5A55; --tomato:#FF5B2E;
+    --soft:#6E5D4C; --mid:#4A3B30; --rule:#E6D6BA; --rule-2:#EADBC0; --muted:#C9B79C;
+    --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"DM Sans",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+  :focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:4px}
+  .wrap{max-width:1040px;margin:0 auto;padding:40px 16px 120px}
+  header{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 20px;margin-bottom:28px}
+  h1{font:800 clamp(32px,5vw,48px)/1 var(--display);letter-spacing:-.03em;margin:0}
+  .meta{font-family:var(--mono);font-size:13px;color:var(--soft);margin:0}
+  .grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:32px;align-items:start}
+  .steps{display:grid;gap:10px}
+  .step{display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;width:100%;padding:16px;border:2px solid transparent;
+    border-radius:16px;background:transparent;color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+  .step:hover{background:var(--rule-2)}
+  .step[aria-selected="true"]{background:var(--paper);border-color:var(--ink);box-shadow:4px 4px 0 var(--ink)}
+  .num{width:36px;height:36px;border-radius:50%;border:2px solid currentColor;display:grid;place-items:center;font:15px var(--mono)}
+  .step[aria-selected="true"] .num{background:var(--sun);border-color:var(--ink)}
+  .step b{display:block;font:800 21px/1.1 var(--display);margin-bottom:4px}
+  .step small{display:block;font-size:14.5px;color:var(--mid)}
+  .count{font-family:var(--mono);font-size:12px;color:var(--teal)}
+  .frame{background:var(--paper);border:3px solid var(--ink);border-radius:22px;box-shadow:10px 10px 0 var(--ink);padding:22px 22px 26px;min-height:440px}
+  .frame h2{font:800 26px/1.1 var(--display);margin:0 0 4px}
+  .sub{margin:0 0 16px;color:var(--soft);font-size:14.5px}
+  .list{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:8px}
+  .list li{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1.5px solid var(--rule);border-radius:10px;background:var(--card)}
+  .list .file{font-family:var(--mono);font-size:13.5px;overflow-wrap:anywhere}
+  .ok{color:var(--teal);font-weight:700;font-size:13px;flex:none}
+  .card{margin:0 0 12px;padding:14px 16px;border:1.5px solid var(--rule);border-radius:12px;background:var(--card)}
+  .card p{margin:0 0 10px}
+  .card .k{margin:0 0 4px;font-weight:700}
+  .card .done{margin:0;color:var(--teal);font-weight:700}
+  .choices{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .rbtn{min-height:40px;padding:9px 15px;border:1.5px solid var(--teal);border-radius:999px;background:var(--white);color:var(--teal);
+    font:600 14.5px var(--body);cursor:pointer}
+  .rbtn:hover{background:var(--teal);color:var(--cream)}
+  .rbtn.primary{background:var(--teal);color:var(--cream)}
+  .rbtn.primary:hover{background:var(--teal-deep)}
+  .rbtn.quiet{border-color:transparent;background:transparent;color:var(--soft)}
+  .rbtn.quiet:hover{color:var(--ink);background:var(--rule-2)}
+  .own{display:flex;gap:8px;flex:1 1 220px}
+  .own input{flex:1;min-width:0;min-height:40px;padding:8px 12px;border:1.5px solid var(--muted);border-radius:10px;background:var(--white);font:15px var(--body);color:var(--ink)}
+  .bar{height:6px;margin:0 0 16px;border-radius:999px;background:var(--rule-2);overflow:hidden}
+  .bar i{display:block;height:100%;background:var(--teal)}
+  .note{margin:4px 0 0;font-size:13.5px;color:var(--soft)}
+  dl{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:0 0 18px}
+  dt{font-weight:700} dd{margin:0;color:var(--mid)}
+  .label{margin:0 0 8px;font-weight:700}
+  .apps li{display:block}
+  .apps b{display:block}
+  .apps span{font-size:14.5px;color:var(--mid)}
+  .empty{color:var(--soft);margin:0 0 16px}
+  .tray{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--cream);padding:14px 16px}
+  .tray .in{max-width:1040px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px}
+  .tray p{margin:0;font-size:15px}
+  .copy{min-height:44px;padding:10px 20px;border:2px solid var(--ink);border-radius:999px;background:var(--sun);color:var(--ink);
+    font:700 15.5px var(--body);cursor:pointer;box-shadow:3px 3px 0 var(--tomato)}
+  .copy:disabled{opacity:.5;cursor:default;box-shadow:none}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  @media (max-width:760px){.grid{grid-template-columns:1fr}.frame{padding:18px;min-height:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1>Career Record</h1><p class="meta" id="meta"></p></header>
+  <div class="grid">
+    <div class="steps" role="tablist" aria-orientation="vertical" aria-label="Your Career Record">
+      <button class="step" role="tab" id="s1" data-step="1" type="button"><span class="num">1</span><span><b>Your documents</b><small>What Claude read from your sources folder.</small></span></button>
+      <button class="step" role="tab" id="s2" data-step="2" type="button"><span class="num">2</span><span><b>What doesn't match</b><small>Where your documents disagree, you pick what's true.</small> <span class="count" id="c2"></span></span></button>
+      <button class="step" role="tab" id="s3" data-step="3" type="button"><span class="num">3</span><span><b>Fill the gaps</b><small>One at a time. Skip any of them.</small> <span class="count" id="c3"></span></span></button>
+      <button class="step" role="tab" id="s4" data-step="4" type="button"><span class="num">4</span><span><b>Where it stands</b><small>Your evidence, your answers, and every application.</small></span></button>
+    </div>
+    <div class="frame" id="view" role="tabpanel" tabindex="0"></div>
+  </div>
+</div>
+<div class="tray"><div class="in"><p id="tray-text"></p><button class="copy" id="copy" type="button"></button></div></div>
+<p class="sr" id="live" aria-live="polite"></p>
+
+<script src="record.js"></script>
+<script>
+(() => {
+  const R = window.RECORD || { updated: '', documents: [], conflicts: [], questions: [], fresh: [], evidence: 0, answers: 0, applications: [] };
+  const KEY = 'career-record:' + (R.updated || 'none');
+  let ans = {};
+  try { ans = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) {}
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(ans)); } catch (e) {} };
+  const $ = id => document.getElementById(id);
+  const make = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const tabs = [...document.querySelectorAll('.step')];
+  const view = $('view'), live = $('live');
+  let step = 1;
+  const items = () => [...(R.conflicts || []), ...(R.questions || []), ...(R.fresh || [])];
+  const open = list => list.filter(i => !ans[i.id]).length;
+
+  $('meta').textContent = R.updated ? 'Updated by Claude ' + R.updated : 'Not built yet';
+
+  const card = item => {
+    const c = make('div', 'card'); c.dataset.id = item.id;
+    if (item.k) c.append(make('p', 'k', item.k));
+    c.append(make('p', '', item.text));
+    if (ans[item.id]) {
+      const d = make('p', 'done', ans[item.id] === '(skipped)' ? 'Skipped. Claude will ask again when it comes up.' : 'You: ' + ans[item.id]);
+      d.tabIndex = -1; c.append(d);
+      const undo = make('button', 'rbtn quiet', 'Change it'); undo.type = 'button';
+      undo.addEventListener('click', () => { delete ans[item.id]; save(); render(); });
+      c.append(undo);
+      return c;
+    }
+    const row = make('div', 'choices');
+    const pick = val => {
+      ans[item.id] = val; save(); render();
+      live.textContent = 'Saved: ' + val;
+      const d = view.querySelector('[data-id="' + CSS.escape(item.id) + '"] .done'); if (d) d.focus({ preventScroll: true });
+    };
+    (item.choices || []).forEach((label, i) => {
+      const b = make('button', 'rbtn' + (i === 0 ? ' primary' : ''), label); b.type = 'button';
+      b.addEventListener('click', () => pick(label)); row.append(b);
+    });
+    const form = make('form', 'own');
+    const inp = make('input'); inp.type = 'text'; inp.setAttribute('aria-label', 'Your answer: ' + item.text);
+    inp.placeholder = (item.choices || []).length ? 'Something else' : 'Your answer';
+    const go = make('button', 'rbtn', 'Save'); go.type = 'submit';
+    form.append(inp, go);
+    form.addEventListener('submit', e => { e.preventDefault(); if (inp.value.trim()) pick(inp.value.trim()); });
+    const skip = make('button', 'rbtn quiet', 'Skip'); skip.type = 'button';
+    skip.addEventListener('click', () => pick('(skipped)'));
+    row.append(form, skip);
+    c.append(row);
+    return c;
+  };
+
+  const render = () => {
+    const v = view; v.replaceChildren();
+    const h = make('h2'); h.tabIndex = -1; v.append(h);
+    if (step === 1) {
+      const docs = R.documents || [];
+      h.textContent = 'Your documents';
+      v.append(make('p', 'sub', docs.length ? docs.length + ' read from sources/' : 'Nothing in sources/ yet'));
+      const ul = make('ul', 'list');
+      docs.forEach(d => { const li = make('li'); li.append(make('span', 'file', d.file), make('span', 'ok', d.status || 'Read')); ul.append(li); });
+      if (docs.length) v.append(ul);
+    } else if (step === 2) {
+      const list = R.conflicts || [];
+      h.textContent = 'What we noticed';
+      v.append(make('p', 'sub', list.length ? 'Your documents disagree here.' : 'Your documents agree.'));
+      list.forEach(i => v.append(card(i)));
+    } else if (step === 3) {
+      const list = [...(R.questions || []), ...(R.fresh || [])];
+      const done = list.length - open(list);
+      h.textContent = 'A few questions';
+      v.append(make('p', 'sub', list.length ? done + ' of ' + list.length + ' answered' : 'No questions right now.'));
+      if (list.length) {
+        const bar = make('div', 'bar'); bar.setAttribute('aria-hidden', 'true');
+        const f = make('i'); f.style.width = (done / list.length * 100) + '%'; bar.append(f); v.append(bar);
+      }
+      list.forEach(i => v.append(card(i)));
+      v.append(make('p', 'note', 'Salary, your address, and demographic answers never show up on this page. Claude asks for those when a form needs them.'));
+    } else {
+      h.textContent = 'Where it stands';
+      const o = open(items());
+      v.append(make('p', 'sub', o ? o + ' still open' : 'Nothing open'));
+      const dl = make('dl');
+      [['Evidence', (R.evidence || 0) + ' claims, each with its proof'], ['Answers', (R.answers || 0) + ' saved']]
+        .forEach(([k, val]) => dl.append(make('dt', '', k), make('dd', '', val)));
+      v.append(dl, make('p', 'label', 'Applications'));
+      const apps = R.applications || [];
+      if (!apps.length) v.append(make('p', 'empty', 'None yet.'));
+      else {
+        const ul = make('ul', 'list apps');
+        apps.forEach(a => { const li = make('li'); li.append(make('b', '', a.company + ' · ' + a.role), make('span', '', a.status + (a.note ? ' · ' + a.note : ''))); ul.append(li); });
+        v.append(ul);
+      }
+    }
+    $('c2').textContent = open(R.conflicts || []) ? open(R.conflicts || []) + ' open' : '';
+    $('c3').textContent = open([...(R.questions || []), ...(R.fresh || [])]) ? open([...(R.questions || []), ...(R.fresh || [])]) + ' open' : '';
+    tray();
+  };
+
+  const answered = () => items().filter(i => ans[i.id]);
+  const tray = () => {
+    const n = answered().length;
+    $('tray-text').textContent = n ? n + (n === 1 ? ' answer' : ' answers') + ' ready for Claude' : (open(items()) ? 'Your answers collect here' : 'You\'re all caught up');
+    $('copy').textContent = n ? 'Copy ' + n + (n === 1 ? ' answer' : ' answers') + ' for Claude' : 'Copy answers for Claude';
+    $('copy').disabled = !n;
+  };
+  $('copy').addEventListener('click', async () => {
+    const lines = answered().map(i => '- [' + i.id + '] ' + (i.k ? i.k + ': ' : '') + i.text + '\n  Answer: ' + ans[i.id]);
+    const text = 'My Career Record answers (record of ' + R.updated + '). Save each one to CLAIMS.md or answers.md, then rebuild my Career Record.\n\n' + lines.join('\n');
+    let ok = false;
+    try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {
+      const t = make('textarea'); t.value = text; document.body.append(t); t.select();
+      try { ok = document.execCommand('copy'); } catch (e2) {} t.remove();
+    }
+    if (!ok) {
+      const t = make('textarea'); t.value = text; t.readOnly = true; t.rows = 8; t.setAttribute('aria-label', 'Your answers for Claude');
+      t.style.cssText = 'width:100%;margin-top:16px;font:13px var(--mono);padding:10px;border:1.5px solid var(--muted);border-radius:10px';
+      view.append(t); t.focus(); t.select();
+    }
+    $('tray-text').textContent = ok ? 'Copied. Paste it into Claude Code.' : 'Copy the selected text, then paste it into Claude Code.';
+    live.textContent = $('tray-text').textContent;
+  });
+
+  const go = (n, focusTab) => {
+    step = n;
+    tabs.forEach(t => { const on = +t.dataset.step === n; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+    view.setAttribute('aria-labelledby', 's' + n);
+    render();
+    if (focusTab) tabs[n - 1].focus();
+  };
+  tabs.forEach((t, i) => {
+    t.setAttribute('aria-controls', 'view');
+    t.addEventListener('click', () => go(i + 1));
+    t.addEventListener('keydown', e => {
+      const n = tabs.length;
+      const j = { ArrowDown: (i + 1) % n, ArrowRight: (i + 1) % n, ArrowUp: (i - 1 + n) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+      if (j !== undefined) { e.preventDefault(); go(j + 1, true); }
+    });
+  });
+  go(open(R.conflicts || []) ? 2 : open([...(R.questions || []), ...(R.fresh || [])]) ? 3 : 1);
+})();
+</script>
+</body>
+</html>
